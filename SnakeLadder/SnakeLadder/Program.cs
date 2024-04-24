@@ -1,98 +1,115 @@
 ﻿// See https://aka.ms/new-console-template for more information
+using SnakeAndLadder;
 using System;
+using System.Numerics;
 
-namespace SnakeLadder
+namespace SnakeAndLadder
 {
-    internal class Program
+    class Game
     {
-        private int position; // Encapsulate as private field
-        private int diceRollCount; // Counter to track the number of dice rolls
 
-        public Program()
+        static int size;
+        Player[] players;
+
+        Game(int size)
         {
-            this.position = 0;
-            this.diceRollCount = 0;
+            players = new Player[size];
         }
 
-        // Public method to get current position
-        public int GetPosition()
+        static Game()
         {
-            return position;
+            Console.WriteLine("====================================");
+            Console.WriteLine("Welcome to Snake and Ladder Game!!!");
+            Console.WriteLine("====================================");
         }
 
-        // Method to get the number of dice rolls
-        public int GetDiceRollCount()
-        {
-            return diceRollCount;
-        }
 
-        // Method to handle player's movement
-        public void Move(int steps)
+
+        public static int MenuDriven()
         {
-            // Implement logic for snakes and ladders here
-            int newPosition = position + steps;
-            if (newPosition <= 100)
+
+            int choice = 0;
+
+            Console.WriteLine("0. Enter Zero to Exit the Game.");
+            Console.WriteLine("1. Enter One to Play the Game!!!");
+
+            try
             {
-                position = newPosition;
-                Console.WriteLine($"Player moved {steps} steps. Current position: {position}");
+                choice = Convert.ToInt32(Console.ReadLine());
             }
-            else
+            catch (FormatException e)
             {
-                Console.WriteLine($"Player stayed in the same position: {position}");
+                Console.WriteLine("Invalid Input : Enter only number.");
             }
+
+
+            return choice;
         }
 
-        // Method to simulate dice roll
-        public int RollDice()
+        static void Main()
         {
-            Random random = new Random();
-            diceRollCount++;
-            return random.Next(1, 7);
-        }
+            Game game;
 
-        // Method to simulate player's option (No Play, Ladder, Snake)
-        public string ChooseOption()
-        {
-            Random random = new Random();
-            int option = random.Next(0, 3);
-            switch (option)
+            int choice = 0;
+
+            while ((choice = MenuDriven()) != 0)
             {
-                case 0:
-                    return "No Play";
-                case 1:
-                    return "Ladder";
-                case 2:
-                    return "Snake";
-                default:
-                    return "No Play";
-            }
-        }
-        static void Main(string[] args)
-        {
-            Program program = new Program();
-            do
-            {
-                int steps = program.RollDice();
-                Console.WriteLine($"Dice rolled: {steps}");
-                Console.WriteLine($"Number of times dice rolled: {program.GetDiceRollCount()}");
-                string option = program.ChooseOption();
-                Console.WriteLine($"Player chose: {option}");
-
-                switch (option)
+                switch (choice)
                 {
-                    case "Ladder":
-                        program.Move(steps);
-                        break;
-                    case "Snake":
-                        program.Move(-steps); // Move backward (negative steps)
-                        break;
-                    case "No Play":
-                    default:
-                        Console.WriteLine("Player stays in the same position.");
+                    case 0: break;
+                    case 1:
+                        Console.WriteLine("Enter the number of players : ");
+
+                        try
+                        {
+                            Game.size = Convert.ToInt32(Console.ReadLine());
+                            Console.WriteLine(size);
+                        }
+                        catch (FormatException e)
+                        {
+                            Console.WriteLine(e.ToString());
+                        }
+
+
+                        if (Game.size == 0) break;
+
+                        game = new Game(Game.size);
+
+                        for (int i = 0; i < size; i++)
+                        {
+                            Console.WriteLine($"Enter the name of Player{i + 1} : ");
+                            game.players[i] = new Player(Console.ReadLine());
+                        }
+
+                        while (true)
+                        {
+                            bool flag = false;
+                            for (int i = 0; i < size; i++)
+                            {
+                                game.players[i].dice = game.players[i].RollDice();
+                                game.players[i].ChOption();
+                                if (game.players[i].currentPos == 100)
+                                {
+                                    flag = true;
+
+                                    Console.WriteLine("\n====================================");
+                                    Console.WriteLine($"{game.players[i].Name} is Winner!!!");
+                                    Console.WriteLine("====================================\n");
+
+                                    break;
+                                }
+                            }
+
+                            if (flag == true)
+                            {
+                                break;
+                            }
+                        }
+
+
                         break;
                 }
-            } while (program.GetPosition() < 100); // Loop until player reaches or surpasses 100
-            Console.WriteLine($"Congratulations! You reached the winning position of 100 in {program.GetDiceRollCount()} dice rolls.");
+            }
         }
     }
 }
