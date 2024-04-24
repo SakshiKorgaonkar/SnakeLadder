@@ -7,7 +7,6 @@ namespace SnakeAndLadder
 {
     class Game
     {
-
         static int size;
         Player[] players;
 
@@ -18,20 +17,15 @@ namespace SnakeAndLadder
 
         static Game()
         {
-            Console.WriteLine("====================================");
             Console.WriteLine("Welcome to Snake and Ladder Game!!!");
-            Console.WriteLine("====================================");
         }
-
-
 
         public static int MenuDriven()
         {
-
             int choice = 0;
 
-            Console.WriteLine("0. Enter Zero to Exit the Game.");
-            Console.WriteLine("1. Enter One to Play the Game!!!");
+            Console.WriteLine("0. Exit the Game.");
+            Console.WriteLine("1. Play the Game!!!");
 
             try
             {
@@ -41,8 +35,6 @@ namespace SnakeAndLadder
             {
                 Console.WriteLine("Invalid Input : Enter only number.");
             }
-
-
             return choice;
         }
 
@@ -56,7 +48,6 @@ namespace SnakeAndLadder
             {
                 switch (choice)
                 {
-                    case 0: break;
                     case 1:
                         Console.WriteLine("Enter the number of players : ");
 
@@ -87,26 +78,21 @@ namespace SnakeAndLadder
                             for (int i = 0; i < size; i++)
                             {
                                 game.players[i].dice = game.players[i].RollDice();
-                                game.players[i].ChOption();
+                                game.players[i].ChooseOption();
                                 if (game.players[i].currentPos == 100)
                                 {
                                     flag = true;
 
-                                    Console.WriteLine("\n====================================");
                                     Console.WriteLine($"{game.players[i].Name} is Winner!!!");
-                                    Console.WriteLine("====================================\n");
 
                                     break;
                                 }
                             }
-
                             if (flag == true)
                             {
                                 break;
                             }
                         }
-
-
                         break;
                 }
             }

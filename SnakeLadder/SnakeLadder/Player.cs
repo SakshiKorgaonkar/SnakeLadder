@@ -10,18 +10,10 @@ namespace SnakeAndLadder
     {
         static int startPos = 0;
         static int endPos = 100;
-
         public string? Name { get; set; }
         public int currentPos;
         public int dice;
         public int count;
-
-        Player()
-        {
-            this.Name = "Player1";
-            this.currentPos = 0;
-            this.count = 0;
-        }
 
         public Player(string name)
         {
@@ -38,7 +30,7 @@ namespace SnakeAndLadder
             return this.dice;
         }
 
-        public void ChOption()
+        public void ChooseOption()
         {
             Random rnd = new Random();
             int option = rnd.Next(1, 4);
@@ -73,7 +65,7 @@ namespace SnakeAndLadder
                     }
 
                     this.RollDice();
-                    this.ChOption();
+                    this.ChooseOption();
 
                     break;
 
@@ -89,12 +81,8 @@ namespace SnakeAndLadder
                     Console.WriteLine("Dice : " + this.dice);
                     Console.WriteLine("Position : " + this.currentPos);
                     Console.WriteLine("Count : " + this.count);
-
-
                     break;
             }
         }
-
-
     }
 }
